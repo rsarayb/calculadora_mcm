@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM de tres cifras</title>
+    <style>
+      input {
+        width: 40px;
+      }
+
+      .resultado {
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+    <h1>Calcular mcm</h1>
+    <h2>Problema</h2>
+    <p>El mínimo común múltiplo de varios números es el menor número que es múltiplo de todos ellos a la vez. <br><br>
+
+        Por ejemplo, el mcm de 3 y 7 es 21, el de 4 y 12 es 12, y el de 9 y 12 es 36.<br><br>
+        
+        El usuario introducirá tres números enteros (positivos, de no más de 5 cifras), uno en cada línea. Tu programa debe mostrar el mínimo común múltiplo de esos tres números.
+    </p>
+    <h2>Ejemplos de entradas y salidas</h2>
+    <p>
+        <ul>
+            <li>Entrada: 3, 7, 2 | Salida: 42</li>
+            <li>Entrada: 12, 24, 48 | Salida: 48</li>
+            <li>Entrada: 1234, 1326, 888 | Salida: 121085016</li>
+            <li>Entrada: 12345, 54321, 55555 | Salida: 2483651996565</li>
+        </ul>
+    </p>
+
+
+    <label for="valor_uno">Valor A</label>
+    <input type="text" id="valor_uno">
+    <label for="valor_dos">Valor B</label>
+    <input type="text" id="valor_dos">
+    <label for="valor_tres">Valor C</label>
+    <input type="text" id="valor_tres">
+    <button type= "button" class="btn"> Calcular mcm</button>
+    <p class="resultado">Resultado: </p>
+
+    <p>Nota: En la consola podrás ver los múltiplos de los numeros, el valor de los exponentes y cuales son los exponentes mayores</p>
+
+    <script>
+
+  const btn = document.querySelector(".btn");   
+
+      btn.addEventListener("click", calculoGeneral);
+
+        function calculoGeneral() {
+
+        const fieldA = document.getElementById("valor_uno");
+        const fieldB = document.getElementById("valor_dos");
+        const fieldC = document.getElementById("valor_tres");
+        const resultado = document.querySelector(".resultado");
+        let minimoComunMultiplo = 0;
+        resultado.textContent += " ";
+
+        let valorA = fieldA.value;
+        let valorB = fieldB.value;
+        let valorC = fieldC.value;
+      
+
+        let valorFinalExponentes = [];
+
+      
+        let multiplosValorA = calcularMultiplos(valorA);
+        let multiplosValorB = calcularMultiplos(valorB);
+        let multiplosValorC = calcularMultiplos(valorC);
+      
+        console.log("**Multiplos**")
+        console.log(multiplosValorA);
+        console.log(multiplosValorB);
+        console.log(multiplosValorC);
+
+        let valorExponenteValorA = calcularExponentes (multiplosValorA);
+        let valorExponenteValorB = calcularExponentes (multiplosValorB);
+        let valorExponenteValorC = calcularExponentes (multiplosValorC);
+
+        
+        console.log("**Exponentes*")
+        console.log(valorExponenteValorA);
+        console.log(valorExponenteValorB);
+        console.log(valorExponenteValorC);
+
+      let valoresPrimos = [valorExponenteValorA[4],valorExponenteValorB[4],valorExponenteValorC[4]]
+      
+
+        for (let i = 0; i < 4; i++) {
+          let valorFinal = 0;
+          let numeroPrimoFinal = 0;
+          valorFinal = Math.max(valorExponenteValorA[i],valorExponenteValorB[i],valorExponenteValorC[i]);
+          valorFinalExponentes.push(valorFinal);
+        }
+
+          let valorFinalPrimos = 1;
+        for (let i = 0; i < 3; i++) {
+        if (valoresPrimos[i] != 0) {
+            valorFinalPrimos *= valoresPrimos[i]; 
+          }
+
+        }
+      
+
+        console.log("**Exponentes mayores*")
+        console.log(valorFinalExponentes);
+
+        
+        minimoComunMultiplo = Math.pow(2,valorFinalExponentes[0]) * Math.pow(3,valorFinalExponentes[1]) * Math.pow(5,valorFinalExponentes[2]) * Math.pow(7,valorFinalExponentes[3])*valorFinalPrimos; 
+        resultado.textContent += minimoComunMultiplo;
+      
+
+        console.log("**MCM**")
+        console.log(minimoComunMultiplo);
+       
+
+        function calcularExponentes (array1) {
+          
+        let exponenteDosArray1 = 0, exponenteTresArray1 = 0; exponenteCincoArray1 = 0; exponenteSieteArray1 = 0; numeroPrimo = 0;
+
+          for (let i = 0; i < array1.length; i++) {
+          
+            if (array1[i] < 10) {
+              
+                    if (array1[i].includes(2)) {
+                      exponenteDosArray1++;
+                    } else if (array1[i].includes(3)) {
+                      exponenteTresArray1++;
+                      } else if (array1[i].includes(5)) {
+                      exponenteCincoArray1++;
+                      } else if (array1[i].includes(7)) {
+                        exponenteSieteArray1++;
+                        } 
+                }
+                    else {
+                      numeroPrimo = array1[i];
+                      
+                    }
+        
+          }
+
+          
+          let valorExponente = [exponenteDosArray1, exponenteTresArray1, exponenteCincoArray1, exponenteSieteArray1, numeroPrimo];
+          return valorExponente;
+
+        }
+
+        function calcularMultiplos (valor) {
+            let multiplosValor = [];
+          do {
+
+            if (valor % 2 == 0) {
+              multiplosValor.push("2")
+              valor = valor / 2;
+              } else if (valor % 3 == 0) {
+              multiplosValor.push("3")
+              valor = valor / 3;
+              }
+                else if (valor % 5 == 0) {
+                multiplosValor.push("5")
+                valor = valor / 5;
+                } else if (valor % 7 == 0) {
+                  multiplosValor.push("7")
+                  valor = valor / 7;
+                }
+                  else if (valor % valor == 0) {
+                    multiplosValor.push(valor)
+                    valor = valor / valor;
+                    
+                  }
+        
+          } while ( valor != 1);
+        
+          return multiplosValor;
+        
+        }
+
+    }
+    </script>
+</body>
+</html>
